@@ -1,0 +1,19 @@
+{
+	"name": "burnbright/silverstripe-shop-geocoding",
+	"description": "Geocoding support for shop module",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "ecommerce", "shop", "geocoding", "address", "ip"],
+	"license": "BSD2",
+	"authors": [{
+		"name": "Jeremy Shipman",
+		"email": "jeremy@burnbright.net",
+		"homepage": "http://github.com/jedateach"
+	}],
+	"extra": {
+		"installer-name": "shop_geocoding"
+	},
+	"require": {
+		"burnbright/silverstripe-shop": "*",
+		"willdurand/geocoder": "@stable"
+	}
+}
