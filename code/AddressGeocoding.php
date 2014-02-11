@@ -2,6 +2,11 @@
 
 class AddressGeocoding extends DataExtension{
 
+	private static $db = array(
+		'Latitude'		=> 'Float(10,6)',  //GPS co-ordinates
+		'Longitude'		=> 'Float(10,6)'
+	);
+
 	private static $inst;
 
 	/**

@@ -25,6 +25,6 @@ AddressGeocoding::set_geocoder($geocoder);
 ```
 
 ## TODO
-
-Work out address from map coordinates.
-
+ 
+ * Estimate customer location, based on IP address.
+ * Work out address from map coordinates.
