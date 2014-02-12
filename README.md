@@ -6,6 +6,12 @@ Adds geocoding support to the shop:
 
 Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library.
 
+## Installation
+
+```sh
+composer reqire burnbright/silverstripe-shop-geocoding
+```
+
 ## Configuration
 
 A default configuration is provided, but you can define your own.

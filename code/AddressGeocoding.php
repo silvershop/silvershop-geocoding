@@ -3,8 +3,8 @@
 class AddressGeocoding extends DataExtension{
 
 	private static $db = array(
-		'Latitude'		=> 'Float(10,6)',  //GPS co-ordinates
-		'Longitude'		=> 'Float(10,6)'
+		'Latitude' => 'Decimal(10,8)', //-90 to 90
+		'Longitude' => 'Decimal(11,8)' //-180 to 180
 	);
 
 	private static $inst;
