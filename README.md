@@ -4,7 +4,7 @@ Adds geocoding support to the shop:
 
  * Work out address coordinates, based on entered address.
 
-Make use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library.
+Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library.
 
 ## Configuration
 

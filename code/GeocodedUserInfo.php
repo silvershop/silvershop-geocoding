@@ -2,7 +2,7 @@
 
 class GeocodedUserInfo extends DataExtension{
 	
-	function contentcontrollerInit() {
+	public function contentcontrollerInit() {
 		$location = ShopUserInfo::singleton()->getAddress();
 		if(!$location || Controller::curr()->getRequest()->getVar('relocateuser')){
 			ShopUserInfo::singleton()->setAddress(new Address($this->findLocation()));
