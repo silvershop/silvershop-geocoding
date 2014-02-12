@@ -24,7 +24,16 @@ $geocoder->registerProvider(
 AddressGeocoding::set_geocoder($geocoder);
 ```
 
+To test ips locally, you can configure a 'test ip' in your config:
+
+```yaml
+Address:
+  test_ip: 202.160.48.114
+```
+
+Add `relocateuser=1` to a url to rerun the geocoder.
+
 ## TODO
  
- * Estimate customer location, based on IP address.
  * Work out address from map coordinates.
+ * Provide a way to view/set location via map interface

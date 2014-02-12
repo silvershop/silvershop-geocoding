@@ -1,7 +1,10 @@
 ---
 Name: shopgeocodingconfig
-After: shop/*
+After: 'shop/*'
 ---
 Address:
   extensions:
     - AddressGeocoding
+Page:
+  extensions:
+    - GeocodedUserInfo

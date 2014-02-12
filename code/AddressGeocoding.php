@@ -12,9 +12,9 @@ class AddressGeocoding extends DataExtension{
 	/**
 	 * Get the configured geocoder.
 	 * Configures freegeoip, hostip, and googlemaps providers by default.
-	 * @return [type] [description]
+	 * @return \Geocoder\Geocoder Geocoder
 	 */
-	private static function get_geocoder() {
+	public static function get_geocoder() {
 		if(self::$inst){
 			return self::$inst;
 		}
