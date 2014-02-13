@@ -5,6 +5,7 @@ After: 'shop/*'
 Address:
   extensions:
     - AddressGeocoding
+  enable_geocoding: true
 Page:
   extensions:
     - GeocodedUserInfo

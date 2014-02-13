@@ -10,4 +10,13 @@ class GeocodingTest extends SapphireTest{
 		$this->assertEquals(-41.292915, $address->Latitude);
 	}
 
+	function testAddressDistanceTo() {
+		$from = $this->objFromFixture("Address", "address1");
+		$to = $this->objFromFixture("Address", "address2");
+		$this->assertEquals(0, $from->distanceTo($from));
+		$this->assertEquals(0, $to->distanceTo($to));
+		$this->assertEquals(494.42414833321, $from->distanceTo($to));
+		$this->assertEquals(494.42414833321, $to->distanceTo($from));
+	}
+
 }
