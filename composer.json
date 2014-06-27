@@ -14,6 +14,7 @@
 	},
 	"require": {
 		"burnbright/silverstripe-shop": "*",
-		"willdurand/geocoder": "@stable"
+		"willdurand/geocoder": "@stable",
+		"betterbrief/silverstripe-googlemapfield": "dev-master"
 	}
 }
