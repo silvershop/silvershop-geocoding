@@ -24,20 +24,19 @@ class CheckoutStep_AddressLocationFallback extends CheckoutStep{
 	}
 
 	function AddressLocationForm(){
-		//required by GoogleMapField
-		Requirements::javascript(THIRDPARTY_DIR."/jquery-entwine/dist/jquery.entwine-dist.js");
 		$shippingaddress = $this->getShippingAddress();
+
 		$config = array(
 			'fieldNames' => array(
 				'lat' => 'Latitude',
 				'lng' => 'Longitude'
 			),
 			'coords' => array(
-				'-27.7949688',
-				'136.4324989'
+				Address::config()->mapdefaults['latitude'],
+				Address::config()->mapdefaults['longitude']
 			),
 			'map' => array(
-				'zoom' => 4
+				'zoom' => Address::config()->mapdefaults['zoom']
 			),
 			'showSearchBox' => false
 		);

@@ -6,6 +6,10 @@ Address:
   extensions:
     - AddressGeocoding
   enable_geocoding: true
+  mapdefaults:
+    latitude: -41.292694
+    longitude: 174.7788669
+    zoom: 5
 Page:
   extensions:
     - GeocodedUserInfo
