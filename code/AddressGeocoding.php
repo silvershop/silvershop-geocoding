@@ -9,6 +9,20 @@ class AddressGeocoding extends DataExtension{
 
 	private static $inst;
 
+	public function updateCMSFields(FieldList $fields){
+		$fields->addFieldToTab("Root.Main",
+			GoogleMapField::create($this->owner, "Location", array(
+				'fieldNames' => array(
+					'lat' => 'Latitude',
+					'lng' => 'Longitude'
+				),
+				'showSearchBox' => false
+			))
+		);
+		$fields->removeByName("Latitude");
+		$fields->removeByName("Longitude");
+	}
+
 	/**
 	 * Get the configured geocoder.
 	 * Configures freegeoip, hostip, and googlemaps providers by default.
