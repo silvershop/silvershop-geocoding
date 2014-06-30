@@ -39,7 +39,21 @@ Address:
 
 Add `relocateuser=1` to a url to rerun the geocoder.
 
-## TODO
- 
- * Work out address from map coordinates.
- * Provide a way to view/set location via map interface
+
+# Map fall back
+
+If an address can't be geocoded, then provide a fallback checkout step for designating the coordinates with a google map field.
+
+Be sure to add the checkout step to yaml config. After billing address will probably work best:
+```yaml
+CheckoutPage:
+  steps:
+    'membership' : 'CheckoutStep_Membership'
+    'contactdetails' : 'CheckoutStep_ContactDetails'
+    'shippingaddress' : 'CheckoutStep_Address'
+    'billingaddress' : 'CheckoutStep_Address'
+    'addresslocation' : 'CheckoutStep_AddressLocationFallback' #here
+    'shippingmethod' : 'CheckoutStep_ShippingMethod'
+    'paymentmethod' : 'CheckoutStep_PaymentMethod'
+    'summary' : 'CheckoutStep_Summary'
+```
