@@ -23,7 +23,9 @@ class GeocodedUserInfo extends DataExtension{
 		$geocoder = AddressGeocoding::get_geocoder();
 		$geodata = array();
 		try{
-			$geodata = $geocoder->geocode($ip)->toArray();
+			if($ip){
+				$geodata = $geocoder->geocode($ip)->toArray();
+			}
 		} catch (Exception $e) {
 			SS_Log::log($e, SS_Log::ERR);
 		}

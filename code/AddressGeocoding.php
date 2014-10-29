@@ -32,15 +32,14 @@ class AddressGeocoding extends DataExtension{
 		if(self::$inst){
 			return self::$inst;
 		}
-		$geocoder = new \Geocoder\Geocoder();
-		$adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
-		$geocoder->registerProvider(
-			new \Geocoder\Provider\ChainProvider(array(
-				new \Geocoder\Provider\FreeGeoIpProvider($adapter),
-				new \Geocoder\Provider\HostIpProvider($adapter),
-				new \Geocoder\Provider\GoogleMapsProvider($adapter)
-			))
-		);
+		$geocoder = new \Geocoder\ProviderBasedGeocoder();
+		$adapter  = new \Ivory\HttpAdapter\CurlHttpAdapter();
+		$chain = new \Geocoder\Provider\Chain(array(
+			new \Geocoder\Provider\FreeGeoIp($adapter),
+			new \Geocoder\Provider\HostIp($adapter),
+			new \Geocoder\Provider\GoogleMaps($adapter)
+		));
+		$geocoder->registerProvider($chain);
 
 		return self::$inst = $geocoder;
 	}
