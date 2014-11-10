@@ -22,7 +22,6 @@ $geocoder = new \Geocoder\Geocoder();
 $adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
 $geocoder->registerProvider(
 	new \Geocoder\Provider\ChainProvider(array(
-		new \Geocoder\Provider\FreeGeoIpProvider($adapter),
 		new \Geocoder\Provider\HostIpProvider($adapter),
 		new \Geocoder\Provider\GoogleMapsProvider($adapter)
 	))
