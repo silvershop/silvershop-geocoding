@@ -39,6 +39,10 @@ Address:
 Add `relocateuser=1` to a url to rerun the geocoder.
 
 
+# Warning
+
+Relying on 3rd-party geocoding services can potentially slow down your website, especially if the external service comes under heavy load. You may want to consider settign up your own geocoding server instance.
+
 # Map fall back
 
 If an address can't be geocoded, then provide a fallback checkout step for designating the coordinates with a google map field.
