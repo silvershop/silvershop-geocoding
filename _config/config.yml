@@ -13,3 +13,4 @@ Address:
 Page:
   extensions:
     - GeocodedUserInfo
+  geocode_visitor_ip: true

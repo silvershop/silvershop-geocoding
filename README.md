@@ -38,8 +38,25 @@ Address:
 
 Add `relocateuser=1` to a url to rerun the geocoder.
 
+### Disable address coordinates geocoding
 
-# Warning
+By default an address's latitude and logitude is automatically retrieved on save if it has not already been worked out. This behaviour can be disabled like this:
+
+```yaml
+Address:
+  enable_geocoding: false
+```
+
+### Disable automatic visitor ip geocoding
+
+By default this module geocodes the ip of every visitor. This behaviour can be disabled like this:
+
+```yaml
+Page:
+  geocode_visitor_ip: false
+```
+
+## Warning
 
 Relying on 3rd-party geocoding services can potentially slow down your website, especially if the external service comes under heavy load. You may want to consider settign up your own geocoding server instance.
 
