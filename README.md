@@ -1,15 +1,13 @@
-# SilverStripe Shop Geocoding
+# SilverShop Geocoding
 
-Adds geocoding support to the shop:
-
- * Work out address coordinates, based on entered address.
+Adds geocoding support to SilverShop. Work out address coordinates, based on entered address.
 
 Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library.
 
 ## Installation
 
 ```sh
-composer reqire burnbright/silverstripe-shop-geocoding
+composer reqire silvershop/geocoding
 ```
 
 ## Configuration
@@ -40,7 +38,8 @@ Add `relocateuser=1` to a url to rerun the geocoder.
 
 ### Disable address coordinates geocoding
 
-By default an address's latitude and logitude is automatically retrieved on save if it has not already been worked out. This behaviour can be disabled like this:
+By default an address's latitude and longitude is automatically retrieved on save if it has not already been worked out.
+This behavior can be disabled like this:
 
 ```yaml
 Address:
@@ -58,13 +57,16 @@ Page:
 
 ## Warning
 
-Relying on 3rd-party geocoding services can potentially slow down your website, especially if the external service comes under heavy load. You may want to consider settign up your own geocoding server instance.
+Relying on 3rd-party geocoding services can potentially slow down your website, especially if the external service
+comes under heavy load. You may want to consider setting up your own geocoding server instance.
 
 # Map fall back
 
-If an address can't be geocoded, then provide a fallback checkout step for designating the coordinates with a google map field.
+If an address can't be geocoded, then provide a fallback checkout step for designating the coordinates with a google
+map field.
 
 Be sure to add the checkout step to yaml config. After billing address will probably work best:
+
 ```yaml
 CheckoutPage:
   steps:

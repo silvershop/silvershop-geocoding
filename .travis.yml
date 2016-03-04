@@ -33,4 +33,4 @@ before_script:
   - composer install
 
 script:
-  - vendor/bin/phpunit shop_geocoding/tests
+  - vendor/bin/phpunit silvershop-geocoding/tests
