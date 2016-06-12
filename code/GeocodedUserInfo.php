@@ -1,8 +1,11 @@
 <?php
 
+/**
+ * @package silvershop-geocoding
+ */
 class GeocodedUserInfo extends DataExtension
 {
-    
+
     public function contentcontrollerInit()
     {
         $location = ShopUserInfo::singleton()->getAddress();

@@ -2,10 +2,12 @@
 
 /**
  * A fallback to use if geocoding fails to locate address.
+ *
+ * @package silvershop-geocoding
  */
 class CheckoutStep_AddressLocationFallback extends CheckoutStep
 {
-    
+
     private static $allowed_actions = array(
         "addresslocation",
         "AddressLocationForm"

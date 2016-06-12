@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @package silvershop-geocoding
+ */
 class AddressGeocoding extends DataExtension
 {
 
@@ -50,7 +53,7 @@ class AddressGeocoding extends DataExtension
     {
         self::$inst = $geocoder;
     }
-    
+
     public function onBeforeWrite()
     {
         if (!$this->owner->Latitude && !$this->owner->Longitude && Address::config()->enable_geocoding) {
@@ -79,7 +82,7 @@ class AddressGeocoding extends DataExtension
     /**
      * Provide distance (in km) to given address.
      * Returns null if inadequate info present.
-     * 
+     *
      * @param  Address $address Address to measure distance to
      * @return float|null distance in km
      */
