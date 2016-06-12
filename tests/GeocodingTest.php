@@ -1,10 +1,13 @@
 <?php
 
+/**
+ * @package silvershop-geocoding
+ */
 class GeocodingTest extends SapphireTest
 {
 
-    public static $fixture_file = 'shop_geocoding/tests/addresses.yml';
-    
+    public static $fixture_file = 'silvershop-geocoding/tests/addresses.yml';
+
     public function testAddressModel()
     {
         $address = $this->objFromFixture("Address", "address1");
