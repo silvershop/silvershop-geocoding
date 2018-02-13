@@ -1,15 +1,27 @@
 {
 	"name": "silvershop/geocoding",
 	"description": "Geocoding support for SilverShop.",
-	"type": "silverstripe-module",
+	"type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "ecommerce", "shop", "geocoding", "address", "ip"],
-	"license": "BSD2",
-	"extra": {
-		"installer-name": "silvershop-geocoding"
-	},
 	"require": {
-		"silvershop/core": "*",
-		"betterbrief/silverstripe-googlemapfield": "~1.2",
+		"silvershop/core": "^3",
+		"betterbrief/silverstripe-googlemapfield": "^2",
 		"willdurand/geocoder": "~2.8.0"
-	}
+	},
+    "license": "BSD-3-Clause",
+    "authors": [    {
+      "name": "SilverShop Contributors",
+      "homepage": "https://github.com/silvershop/silvershop-stock/graphs/contributors"
+    }],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "SilverShop\\Geocoding\\": "src/",
+            "SilverShop\\Geocoding\\Tests\\": "tests/unit/"
+        }
+    }
 }

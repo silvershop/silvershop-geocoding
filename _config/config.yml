@@ -2,9 +2,9 @@
 Name: shopgeocodingconfig
 After: 'silvershop/*'
 ---
-Address:
+SilverShop\Model\Address:
   extensions:
-    - AddressGeocoding
+    - SilverShop\Geocoding\Extensions\AddressGeocoding
   enable_geocoding: true
   mapdefaults:
     latitude: -41.292694
@@ -12,5 +12,5 @@ Address:
     zoom: 5
 Page:
   extensions:
-    - GeocodedUserInfo
+    - SilverShop\Geocoding\Extensions\GeocodedUserInfo
   geocode_visitor_ip: true

@@ -1,8 +1,12 @@
 <?php
 
-/**
- * @package silvershop-geocoding
- */
+namespace SilverShop\Geocoding;
+
+use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\DataExtension;
+use SilverShop\Model\Address;
+use Exception;
+
 class AddressGeocoding extends DataExtension
 {
 
@@ -75,7 +79,7 @@ class AddressGeocoding extends DataExtension
             $this->owner->Latitude = $geocoded->getLatitude();
             $this->owner->Longitude = $geocoded->getLongitude();
         } catch (Exception $e) {
-            SS_Log::log($e, SS_Log::ERR);
+
         }
     }
 

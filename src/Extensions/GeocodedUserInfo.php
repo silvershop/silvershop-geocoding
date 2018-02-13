@@ -1,8 +1,12 @@
 <?php
 
-/**
- * @package silvershop-geocoding
- */
+namespace SilverShop\Geocoding\Extensions;
+
+use SilverStripe\Control\Controller;
+use SilverStripe\ORM\DataExtension;
+use SilverShop\Model\Address;
+use Page;
+
 class GeocodedUserInfo extends DataExtension
 {
 
@@ -10,6 +14,7 @@ class GeocodedUserInfo extends DataExtension
     {
         $location = ShopUserInfo::singleton()->getAddress();
         $autocode = Page::config()->geocode_visitor_ip;
+
         if ((!$location && $autocode) || Controller::curr()->getRequest()->getVar('relocateuser')) {
             ShopUserInfo::singleton()->setAddress(new Address($this->findLocation()));
         }
@@ -18,11 +23,11 @@ class GeocodedUserInfo extends DataExtension
     protected function findLocation()
     {
         $ip = Controller::curr()->getRequest()->getIP();
-        //TODO:what to do if there is no ip?
-        //rewrite localhost to a testing ip
+
         if (in_array($ip, array( '127.0.0.1', '::1' ))) {
             $ip = Address::config()->test_ip;
         }
+
         return $this->addressFromIP($ip);
     }
 
@@ -30,13 +35,15 @@ class GeocodedUserInfo extends DataExtension
     {
         $geocoder = AddressGeocoding::get_geocoder();
         $geodata = array();
+
         try {
             if ($ip) {
                 $geodata = $geocoder->geocode($ip)->toArray();
             }
         } catch (Exception $e) {
-            SS_Log::log($e, SS_Log::ERR);
+
         }
+
         $geodata = array_filter($geodata);
         $datamap = array(
             'Country' => 'countryCode',
@@ -46,7 +53,9 @@ class GeocodedUserInfo extends DataExtension
             'Latitude' => 'latitude',
             'Longitude' => 'longitude'
         );
+
         $mappeddata = array();
+
         foreach ($datamap as $addressfield => $geofield) {
             if (is_array($geofield)) {
                 if ($data = implode(" ", array_intersect_key($geodata, array_combine($geofield, $geofield)))) {
