@@ -1,19 +1,21 @@
 <?php
 
-namespace SilverShop\Geocoding;
+namespace SilverShop\Geocoding\Extensions;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataExtension;
 use SilverShop\Model\Address;
+use BetterBrief\GoogleMapField;
+use SilverStripe\Dev\SapphireTest;
 use Exception;
 
 class AddressGeocoding extends DataExtension
 {
 
-    private static $db = array(
+    private static $db = [
         'Latitude' => 'Decimal(10,8)', //-90 to 90 degrees
         'Longitude' => 'Decimal(11,8)' //-180 to 180 degrees
-    );
+    ];
 
     private static $inst;
 

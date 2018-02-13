@@ -1,24 +1,30 @@
 <?php
 
-/**
- * A fallback to use if geocoding fails to locate address.
- *
- */
+namespace SilverShop\Geocoding\Checkout;
+
+use SilverShop\Checkout\Step\CheckoutStep;
+use SilverShop\Model\Address;
+use SilverStripe\Form\FieldList;
+use SilverStripe\Form\FormAction;
+use SilverStripe\Form\LiteralField;
+use SilverStripe\Form\Form;
+use BetterBrief\GoogleMapField;
+
 class CheckoutStepAddressLocationFallback extends CheckoutStep
 {
-
-    private static $allowed_actions = array(
+    private static $allowed_actions = [
         "addresslocation",
         "AddressLocationForm"
-    );
+    ];
 
     public function addresslocation()
     {
         $shippingaddress = $this->getShippingAddress();
-        //TODO: verify shipping address exists
+
         if ((int)$shippingaddress->Latitude && (int)$shippingaddress->Longitude) {
             return $this->owner->redirect($this->NextStepLink());
         }
+
         $form = $this->AddressLocationForm();
 
         return array(

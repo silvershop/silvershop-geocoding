@@ -4,6 +4,7 @@ namespace SilverShop\Geocoding\Extensions;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\ORM\DataExtension;
+use SilverShop\ShopUserInfo;
 use SilverShop\Model\Address;
 use Page;
 

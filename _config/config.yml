@@ -1,6 +1,5 @@
 ---
 Name: shopgeocodingconfig
-After: 'silvershop/*'
 ---
 SilverShop\Model\Address:
   extensions:
