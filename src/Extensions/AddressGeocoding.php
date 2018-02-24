@@ -69,13 +69,8 @@ class AddressGeocoding extends DataExtension
 
     public function geocodeAddress()
     {
-        //we don't want geocoding to occur during testing
-        //TODO: we could possibly switch to a mock setup
-        if (class_exists('SapphireTest', false) && SapphireTest::is_running_test()) {
-            return;
-        }
-        //TODO: check if address is valid
         $geocoder = self::get_geocoder();
+
         try {
             $geocoded = $geocoder->geocode($this->owner->toString());
             $this->owner->Latitude = $geocoded->getLatitude();
