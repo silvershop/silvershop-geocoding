@@ -1,13 +1,15 @@
 {
-	"name": "silvershop/geocoding",
-	"description": "Geocoding support for SilverShop.",
-	"type": "silverstripe-vendormodule",
-	"keywords": ["silverstripe", "ecommerce", "shop", "geocoding", "address", "ip"],
-	"require": {
-		"silvershop/core": "^3",
-		"betterbrief/silverstripe-googlemapfield": "^2",
-		"willdurand/geocoder": "~2.8.0"
-	},
+    "name": "silvershop/geocoding",
+    "description": "Geocoding support for SilverShop.",
+    "type": "silverstripe-vendormodule",
+    "keywords": ["silverstripe", "ecommerce", "shop", "geocoding", "address", "ip"],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "silvershop/core": "^3",
+        "betterbrief/silverstripe-googlemapfield": "^2",
+        "willdurand/geocoder": "~2.8.0"
+    },
     "license": "BSD-3-Clause",
     "authors": [    {
       "name": "SilverShop Contributors",
