@@ -8,7 +8,7 @@
     "require": {
         "silvershop/core": "^3",
         "betterbrief/silverstripe-googlemapfield": "^2",
-        "geocoder-php/geocoder": "^4.0"
+        "willdurand/geocoder": "^4.0"
     },
     "license": "BSD-3-Clause",
     "authors": [    {
