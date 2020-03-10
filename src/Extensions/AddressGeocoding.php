@@ -2,15 +2,12 @@
 
 namespace SilverShop\Geocoding\Extensions;
 
-use http\Client;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\GraphQL\PersistedQuery\GuzzleHTTPClient;
 use SilverStripe\ORM\DataExtension;
 use SilverShop\Model\Address;
 use BetterBrief\GoogleMapField;
 use SilverStripe\Dev\SapphireTest;
 use Exception;
-use Solarium\Core\Client\Adapter\Guzzle;
 
 class AddressGeocoding extends DataExtension
 {
