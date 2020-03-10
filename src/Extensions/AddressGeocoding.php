@@ -11,7 +11,6 @@ use Exception;
 
 class AddressGeocoding extends DataExtension
 {
-
     private static $db = [
         'Latitude' => 'Decimal(10,8)', //-90 to 90 degrees
         'Longitude' => 'Decimal(11,8)' //-180 to 180 degrees
@@ -44,12 +43,20 @@ class AddressGeocoding extends DataExtension
         if (self::$inst) {
             return self::$inst;
         }
-        $geocoder = new \Geocoder\Geocoder();
-        $adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
-        $chain = new \Geocoder\Provider\ChainProvider(array(
-            new \Geocoder\Provider\HostIpProvider($adapter),
-            new \Geocoder\Provider\GoogleMapsProvider($adapter)
+
+        $geocoder = new \Geocoder\ProviderAggregator();
+        $guzzle = new \GuzzleHttp\Client([
+            'timeout' => 2.0,
+            'verify' => false,
+        ]);
+
+        $adapter  = new \Http\Adapter\Guzzle6\Client($guzzle);
+        $chain = new \Geocoder\Provider\Chain\Chain(array(
+            new \Geocoder\Provider\FreeGeoIp\FreeGeoIp($adapter),
+            new \Geocoder\Provider\HostIp\HostIp($adapter),
+            new \Geocoder\Provider\GoogleMaps\GoogleMaps($adapter),
         ));
+
         $geocoder->registerProvider($chain);
 
         return self::$inst = $geocoder;
@@ -73,8 +80,10 @@ class AddressGeocoding extends DataExtension
 
         try {
             $geocoded = $geocoder->geocode($this->owner->toString());
-            $this->owner->Latitude = $geocoded->getLatitude();
-            $this->owner->Longitude = $geocoded->getLongitude();
+            if ($geocoded->first() && $point = $geocoded->first()->getCoordinates()) {
+                $this->owner->Latitude = $point->getLatitude();
+                $this->owner->Longitude = $point->getLongitude();
+            }
         } catch (Exception $e) {
 
         }
