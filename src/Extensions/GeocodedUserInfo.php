@@ -36,27 +36,31 @@ class GeocodedUserInfo extends DataExtension
     protected function addressFromIP($ip)
     {
         $geocoder = AddressGeocoding::get_geocoder();
-        $geodata = array();
+        $geodata = [];
 
         try {
             if ($ip) {
-                $geodata = $geocoder->geocode($ip)->toArray();
+                $data = $geocoder->geocode($ip);
+
+                if ($data) {
+                    $geodata = $data->all();
+                }
             }
         } catch (Exception $e) {
 
         }
 
         $geodata = array_filter($geodata);
-        $datamap = array(
+        $datamap = [
             'Country' => 'countryCode',
             'County' => 'county',
             'State' => 'region',
             'PostalCode' => 'zipcode',
             'Latitude' => 'latitude',
             'Longitude' => 'longitude'
-        );
+        ];
 
-        $mappeddata = array();
+        $mappeddata = [];
 
         foreach ($datamap as $addressfield => $geofield) {
             if (is_array($geofield)) {
