@@ -50,7 +50,7 @@ class AddressGeocoding extends DataExtension
             'verify' => false,
         ]);
 
-        $adapter  = new \Http\Adapter\Guzzle6\Client($guzzle);
+        $adapter  = new \Http\Adapter\Guzzle7\Client($guzzle);
         $chain = new \Geocoder\Provider\Chain\Chain(array(
             new \Geocoder\Provider\FreeGeoIp\FreeGeoIp($adapter),
             new \Geocoder\Provider\HostIp\HostIp($adapter),
