@@ -27,29 +27,29 @@ class CheckoutStepAddressLocationFallback extends CheckoutStep
 
         $form = $this->AddressLocationForm();
 
-        return array(
+        return [
             'OrderForm' => $form
-        );
+        ];
     }
 
     public function AddressLocationForm()
     {
         $shippingaddress = $this->getShippingAddress();
 
-        $config = array(
-            'fieldNames' => array(
+        $config = [
+            'fieldNames' => [
                 'lat' => 'Latitude',
                 'lng' => 'Longitude'
-            ),
-            'coords' => array(
+            ],
+            'coords' => [
                 Address::config()->mapdefaults['latitude'],
                 Address::config()->mapdefaults['longitude']
-            ),
-            'map' => array(
+            ],
+            'map' => [
                 'zoom' => Address::config()->mapdefaults['zoom']
-            ),
+            ],
             'showSearchBox' => false
-        );
+        ];
         $fields = new FieldList(
             LiteralField::create("locationneededmessage", "<p class=\"message warning\">We could not automatically determine your shipping location. Please find and click the exact location on the map:</p>"),
             GoogleMapField::create($shippingaddress, "Location", $config)
