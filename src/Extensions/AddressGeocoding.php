@@ -20,14 +20,15 @@ class AddressGeocoding extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-        $fields->addFieldToTab("Root.Main",
-            GoogleMapField::create($this->owner, "Location", array(
-                'fieldNames' => array(
+        $fields->addFieldToTab(
+            "Root.Main",
+            GoogleMapField::create($this->owner, "Location", [
+                'fieldNames' => [
                     'lat' => 'Latitude',
                     'lng' => 'Longitude'
-                ),
+                ],
                 'showSearchBox' => false
-            ))
+            ])
         );
         $fields->removeByName("Latitude");
         $fields->removeByName("Longitude");
@@ -51,11 +52,11 @@ class AddressGeocoding extends DataExtension
         ]);
 
         $adapter  = new \Http\Adapter\Guzzle7\Client($guzzle);
-        $chain = new \Geocoder\Provider\Chain\Chain(array(
+        $chain = new \Geocoder\Provider\Chain\Chain([
             new \Geocoder\Provider\FreeGeoIp\FreeGeoIp($adapter),
             new \Geocoder\Provider\HostIp\HostIp($adapter),
             new \Geocoder\Provider\GoogleMaps\GoogleMaps($adapter),
-        ));
+        ]);
 
         $geocoder->registerProvider($chain);
 
@@ -85,7 +86,6 @@ class AddressGeocoding extends DataExtension
                 $this->owner->Longitude = $point->getLongitude();
             }
         } catch (Exception $e) {
-
         }
     }
 
@@ -125,7 +125,11 @@ class AddressGeocoding extends DataExtension
      * @return float Distance between points in [m] (same as earthRadius)
      */
     public static function haversine_distance(
-        $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000
+        $latitudeFrom,
+        $longitudeFrom,
+        $latitudeTo,
+        $longitudeTo,
+        $earthRadius = 6371000
     ) {
         // convert from degrees to radians
         $latFrom = deg2rad($latitudeFrom);

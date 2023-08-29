@@ -26,7 +26,7 @@ class GeocodedUserInfo extends DataExtension
     {
         $ip = Controller::curr()->getRequest()->getIP();
 
-        if (in_array($ip, array( '127.0.0.1', '::1' ))) {
+        if (in_array($ip, [ '127.0.0.1', '::1' ])) {
             $ip = Address::config()->test_ip;
         }
 
@@ -47,7 +47,6 @@ class GeocodedUserInfo extends DataExtension
                 }
             }
         } catch (Exception $e) {
-
         }
 
         $geodata = array_filter($geodata);

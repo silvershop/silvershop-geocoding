@@ -4,6 +4,11 @@ Adds geocoding support to SilverShop. Work out address coordinates, based on ent
 
 Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library.
 
+[![Latest Stable Version](https://poser.pugx.org/silvershop/geocoding/v/stable.png)](https://packagist.org/packages/silvershop/geocoding)
+[![Latest Unstable Version](https://poser.pugx.org/silvershop/geocoding/v/unstable.png)](https://packagist.org/packages/silvershop/geocoding)
+[![CI](https://github.com/silvershop/geocoding/actions/workflows/ci.yml/badge.svg)](https://github.com/silvershop/geocoding/actions/workflows/ci.yml)
+[![Total Downloads](https://poser.pugx.org/silvershop/geocoding/downloads.png)](https://packagist.org/packages/silvershop/geocoding)
+
 ## Installation
 
 ```sh
