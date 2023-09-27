@@ -6,7 +6,7 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
-        "silvershop/core": "^3",
+        "silvershop/core": "^4",
         "betterbrief/silverstripe-googlemapfield": "^2",
         "willdurand/geocoder": "^4.0",
         "geocoder-php/chain-provider": "^4.1",
@@ -27,7 +27,7 @@
     }],
     "extra": {
         "branch-alias": {
-            "dev-main": "2.x-dev"
+            "dev-main": "3.x-dev"
         }
     },
     "autoload": {
