@@ -12,7 +12,7 @@ Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocode
 ## Installation
 
 ```sh
-composer reqire silvershop/geocoding
+composer require silvershop/geocoding
 ```
 
 ## Configuration
