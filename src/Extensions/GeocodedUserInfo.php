@@ -2,14 +2,14 @@
 
 namespace SilverShop\Geocoding\Extensions;
 
-use SilverStripe\Control\Controller;
-use SilverStripe\ORM\DataExtension;
-use SilverShop\ShopUserInfo;
-use SilverShop\Model\Address;
 use Exception;
 use Page;
+use SilverShop\Model\Address;
+use SilverShop\ShopUserInfo;
+use SilverStripe\Control\Controller;
+use SilverStripe\Core\Extension;
 
-class GeocodedUserInfo extends DataExtension
+class GeocodedUserInfo extends Extension
 {
 
     public function contentcontrollerInit()

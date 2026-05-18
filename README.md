@@ -1,18 +1,15 @@
-# SilverShop Geocoding
+# SilverStripe Shop Geocoding
 
-Adds geocoding support to SilverShop. Work out address coordinates, based on entered address.
+Adds geocoding support to the shop:
+
+ * Work out address coordinates, based on entered address.
 
 Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library.
-
-[![Latest Stable Version](https://poser.pugx.org/silvershop/geocoding/v/stable.png)](https://packagist.org/packages/silvershop/geocoding)
-[![Latest Unstable Version](https://poser.pugx.org/silvershop/geocoding/v/unstable.png)](https://packagist.org/packages/silvershop/geocoding)
-[![CI](https://github.com/silvershop/silvershop-geocoding/actions/workflows/ci.yml/badge.svg)](https://github.com/silvershop/silvershop-geocoding/actions/workflows/ci.yml)
-[![Total Downloads](https://poser.pugx.org/silvershop/geocoding/downloads.png)](https://packagist.org/packages/silvershop/geocoding)
 
 ## Installation
 
 ```sh
-composer require silvershop/geocoding
+composer reqire burnbright/silverstripe-shop-geocoding
 ```
 
 ## Configuration
@@ -25,6 +22,7 @@ $geocoder = new \Geocoder\Geocoder();
 $adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
 $geocoder->registerProvider(
 	new \Geocoder\Provider\ChainProvider(array(
+		new \Geocoder\Provider\FreeGeoIpProvider($adapter),
 		new \Geocoder\Provider\HostIpProvider($adapter),
 		new \Geocoder\Provider\GoogleMapsProvider($adapter)
 	))
@@ -41,37 +39,12 @@ Address:
 
 Add `relocateuser=1` to a url to rerun the geocoder.
 
-### Disable address coordinates geocoding
-
-By default an address's latitude and longitude is automatically retrieved on save if it has not already been worked out.
-This behavior can be disabled like this:
-
-```yaml
-Address:
-  enable_geocoding: false
-```
-
-### Disable automatic visitor ip geocoding
-
-By default this module geocodes the ip of every visitor. This behaviour can be disabled like this:
-
-```yaml
-Page:
-  geocode_visitor_ip: false
-```
-
-## Warning
-
-Relying on 3rd-party geocoding services can potentially slow down your website, especially if the external service
-comes under heavy load. You may want to consider setting up your own geocoding server instance.
 
 # Map fall back
 
-If an address can't be geocoded, then provide a fallback checkout step for designating the coordinates with a google
-map field.
+If an address can't be geocoded, then provide a fallback checkout step for designating the coordinates with a google map field.
 
 Be sure to add the checkout step to yaml config. After billing address will probably work best:
-
 ```yaml
 CheckoutPage:
   steps:

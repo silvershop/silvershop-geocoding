@@ -2,14 +2,13 @@
 
 namespace SilverShop\Geocoding\Extensions;
 
-use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
-use SilverShop\Model\Address;
 use BetterBrief\GoogleMapField;
-use SilverStripe\Dev\SapphireTest;
 use Exception;
+use SilverShop\Model\Address;
+use SilverStripe\Core\Extension;
+use SilverStripe\Forms\FieldList;
 
-class AddressGeocoding extends DataExtension
+class AddressGeocoding extends Extension
 {
     private static $db = [
         'Latitude' => 'Decimal(10,8)', //-90 to 90 degrees

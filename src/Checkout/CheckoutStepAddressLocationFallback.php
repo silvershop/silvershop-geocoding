@@ -2,13 +2,14 @@
 
 namespace SilverShop\Geocoding\Checkout;
 
+use BetterBrief\GoogleMapField;
+use SilverShop\Cart\ShoppingCart;
 use SilverShop\Checkout\Step\CheckoutStep;
 use SilverShop\Model\Address;
-use SilverStripe\Form\FieldList;
-use SilverStripe\Form\FormAction;
-use SilverStripe\Form\LiteralField;
-use SilverStripe\Form\Form;
-use BetterBrief\GoogleMapField;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
+use SilverStripe\Forms\FormAction;
+use SilverStripe\Forms\LiteralField;
 
 class CheckoutStepAddressLocationFallback extends CheckoutStep
 {
