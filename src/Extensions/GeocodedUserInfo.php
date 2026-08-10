@@ -6,8 +6,10 @@ use SilverStripe\Control\Controller;
 use SilverStripe\ORM\DataExtension;
 use SilverShop\ShopUserInfo;
 use SilverShop\Model\Address;
-use Exception;
+use Throwable;
 use Page;
+use Psr\Log\LoggerInterface;
+use SilverStripe\Core\Injector\Injector;
 
 class GeocodedUserInfo extends DataExtension
 {
@@ -46,7 +48,11 @@ class GeocodedUserInfo extends DataExtension
                     $geodata = $data->all();
                 }
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            Injector::inst()->get(LoggerInterface::class)->notice(
+                'IP geocoding failed',
+                ['exception' => $e]
+            );
         }
 
         $geodata = array_filter($geodata);

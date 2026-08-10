@@ -7,7 +7,9 @@ use SilverStripe\ORM\DataExtension;
 use SilverShop\Model\Address;
 use BetterBrief\GoogleMapField;
 use SilverStripe\Dev\SapphireTest;
-use Exception;
+use Throwable;
+use Psr\Log\LoggerInterface;
+use SilverStripe\Core\Injector\Injector;
 
 class AddressGeocoding extends DataExtension
 {
@@ -85,7 +87,11 @@ class AddressGeocoding extends DataExtension
                 $this->owner->Latitude = $point->getLatitude();
                 $this->owner->Longitude = $point->getLongitude();
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            Injector::inst()->get(LoggerInterface::class)->notice(
+                'Address geocoding failed',
+                ['exception' => $e]
+            );
         }
     }
 
