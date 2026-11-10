@@ -88,3 +88,10 @@ $distanceInKm = $addressA->distanceTo($addressB); // float, or null if either la
 ```
 
 Addresses expose `Latitude` and `Longitude` fields, populated on save when geocoding succeeds.
+
+## Upgrading
+
+Version 4 targets SilverStripe 6 and removes the map picker and visitor-IP features (the archived
+`betterbrief/silverstripe-googlemapfield` dependency is gone). Your `Latitude` / `Longitude` data is
+preserved. If you are coming from version 3, see [UPGRADING.md](UPGRADING.md) for the breaking changes
+and the YAML lines to remove.
