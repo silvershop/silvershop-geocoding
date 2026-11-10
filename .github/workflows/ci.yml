@@ -9,6 +9,3 @@ jobs:
   ci:
     name: CI
     uses: silverstripe/gha-ci/.github/workflows/ci.yml@v1
-    with:
-      composer_require_extra:
-        phpunit/phpunit:^9.5

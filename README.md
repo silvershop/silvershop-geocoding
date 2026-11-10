@@ -1,13 +1,19 @@
 # SilverShop Geocoding
 
-Adds geocoding support to SilverShop. Work out address coordinates, based on entered address.
+Adds geocoding support to [SilverShop](https://github.com/silvershop/silvershop-core):
 
-Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library.
+* Works out an address's coordinates (latitude/longitude) from the entered address, automatically on save.
+* Provides a `distanceTo()` helper to measure the great-circle distance between two addresses.
 
-[![Latest Stable Version](https://poser.pugx.org/silvershop/geocoding/v/stable.png)](https://packagist.org/packages/silvershop/geocoding)
-[![Latest Unstable Version](https://poser.pugx.org/silvershop/geocoding/v/unstable.png)](https://packagist.org/packages/silvershop/geocoding)
-[![CI](https://github.com/silvershop/silvershop-geocoding/actions/workflows/ci.yml/badge.svg)](https://github.com/silvershop/silvershop-geocoding/actions/workflows/ci.yml)
-[![Total Downloads](https://poser.pugx.org/silvershop/geocoding/downloads.png)](https://packagist.org/packages/silvershop/geocoding)
+Built on the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocoder) library. The default
+provider is [Nominatim](https://nominatim.org/) (OpenStreetMap), which is keyless and works out of the
+box. Google Maps is used automatically when an API key is configured.
+
+## Requirements
+
+* SilverStripe CMS 6
+* SilverShop core ^6
+* PHP 8.2+
 
 ## Installation
 
@@ -15,72 +21,77 @@ Makes use of the [geocoder-php/Geocoder](https://github.com/geocoder-php/Geocode
 composer require silvershop/geocoding
 ```
 
+Then run `dev/build?flush=1`.
+
 ## Configuration
 
-A default configuration is provided, but you can define your own.
+All settings live on `SilverShop\Model\Address`.
 
-In _config.php:
-```php
-$geocoder = new \Geocoder\Geocoder();
-$adapter  = new \Geocoder\HttpAdapter\CurlHttpAdapter();
-$geocoder->registerProvider(
-	new \Geocoder\Provider\ChainProvider(array(
-		new \Geocoder\Provider\HostIpProvider($adapter),
-		new \Geocoder\Provider\GoogleMapsProvider($adapter)
-	))
-);
-AddressGeocoding::set_geocoder($geocoder);
-```
+### Disable automatic geocoding
 
-To test ips locally, you can configure a 'test ip' in your config:
+By default an address's latitude and longitude are worked out on save if they have not been set yet.
+Disable this with:
 
 ```yaml
-Address:
-  test_ip: 202.160.48.114
-```
-
-Add `relocateuser=1` to a url to rerun the geocoder.
-
-### Disable address coordinates geocoding
-
-By default an address's latitude and longitude is automatically retrieved on save if it has not already been worked out.
-This behavior can be disabled like this:
-
-```yaml
-Address:
+SilverShop\Model\Address:
   enable_geocoding: false
 ```
 
-### Disable automatic visitor ip geocoding
+### Use Google Maps
 
-By default this module geocodes the ip of every visitor. This behaviour can be disabled like this:
-
-```yaml
-Page:
-  geocode_visitor_ip: false
-```
-
-## Warning
-
-Relying on 3rd-party geocoding services can potentially slow down your website, especially if the external service
-comes under heavy load. You may want to consider setting up your own geocoding server instance.
-
-# Map fall back
-
-If an address can't be geocoded, then provide a fallback checkout step for designating the coordinates with a google
-map field.
-
-Be sure to add the checkout step to yaml config. After billing address will probably work best:
+Provide a [Google Maps API key](https://developers.google.com/maps/documentation/geocoding/get-api-key)
+to use Google Maps ahead of Nominatim for higher-quality results:
 
 ```yaml
-CheckoutPage:
-  steps:
-    'membership' : 'CheckoutStep_Membership'
-    'contactdetails' : 'CheckoutStep_ContactDetails'
-    'shippingaddress' : 'CheckoutStep_Address'
-    'billingaddress' : 'CheckoutStep_Address'
-    'addresslocation' : 'CheckoutStep_AddressLocationFallback' #here
-    'shippingmethod' : 'CheckoutStep_ShippingMethod'
-    'paymentmethod' : 'CheckoutStep_PaymentMethod'
-    'summary' : 'CheckoutStep_Summary'
+SilverShop\Model\Address:
+  google_maps_api_key: 'your-key-here'
 ```
+
+### Nominatim fair use
+
+The public OpenStreetMap Nominatim server has an [acceptable-use policy](https://operations.osmfoundation.org/policies/nominatim/):
+at most 1 request per second, and a `User-Agent` that identifies your application. Set your own
+identifier, and for production or bulk use point the module at your own Nominatim instance:
+
+```yaml
+SilverShop\Model\Address:
+  geocoder_user_agent: 'example.com'
+  nominatim_server: 'https://nominatim.example.com'
+```
+
+### Add your own provider
+
+Drop in any [geocoder-php provider](https://github.com/geocoder-php/Geocoder#providers) (Mapbox, HERE,
+a local PDOK provider, etc.) alongside the defaults. Registered providers are tried first, then Google
+(if keyed), then Nominatim. Call this from a bootstrap, e.g. a module `_config.php`:
+
+```php
+use SilverShop\Geocoding\Extensions\AddressGeocoding;
+
+AddressGeocoding::add_provider($myProvider);
+```
+
+### Replace the geocoder entirely
+
+For full control, supply your own assembled `Geocoder` instance:
+
+```php
+use SilverShop\Geocoding\Extensions\AddressGeocoding;
+
+AddressGeocoding::set_geocoder($myGeocoder);
+```
+
+## Usage
+
+```php
+$distanceInKm = $addressA->distanceTo($addressB); // float, or null if either lacks coordinates
+```
+
+Addresses expose `Latitude` and `Longitude` fields, populated on save when geocoding succeeds.
+
+## Upgrading
+
+Version 4 targets SilverStripe 6 and removes the map picker and visitor-IP features (the archived
+`betterbrief/silverstripe-googlemapfield` dependency is gone). Your `Latitude` / `Longitude` data is
+preserved. If you are coming from version 3, see [UPGRADING.md](UPGRADING.md) for the breaking changes
+and the YAML lines to remove.

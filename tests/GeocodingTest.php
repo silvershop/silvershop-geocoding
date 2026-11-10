@@ -2,43 +2,61 @@
 
 namespace SilverShop\Geocoding\Tests;
 
-use Error;
+use Geocoder\Collection;
+use Geocoder\Geocoder;
+use Geocoder\Model\Address as GeoAddress;
+use Geocoder\Model\AddressCollection;
+use Geocoder\Provider\Provider;
+use Geocoder\ProviderAggregator;
+use Geocoder\Query\GeocodeQuery;
+use Geocoder\Query\ReverseQuery;
 use Psr\Log\LoggerInterface;
 use SilverShop\Geocoding\Extensions\AddressGeocoding;
-use SilverShop\Geocoding\Extensions\GeocodedUserInfo;
+use SilverShop\Model\Address;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\SapphireTest;
-use SilverShop\Model\Address;
 
 class GeocodingTest extends SapphireTest
 {
-
-    public static $fixture_file = 'addresses.yml';
+    protected static $fixture_file = 'addresses.yml';
 
     protected function tearDown(): void
     {
-        $this->setGeocoderInstance(null);
+        AddressGeocoding::set_geocoder(null);
+        AddressGeocoding::clear_providers();
         parent::tearDown();
     }
 
-    public function testAddressModel()
+    public function testAddressModel(): void
     {
         $address = $this->objFromFixture(Address::class, "address1");
         $this->assertEquals(174.77908, $address->Longitude);
         $this->assertEquals(-41.292915, $address->Latitude);
     }
 
-    public function testAddressDistanceTo()
+    public function testAddressDistanceTo(): void
     {
         $from = $this->objFromFixture(Address::class, "address1");
         $to = $this->objFromFixture(Address::class, "address2");
-        $this->assertEquals(0, $from->distanceTo($from));
-        $this->assertEquals(0, $to->distanceTo($to));
-        $this->assertEquals(494.42414833321, round($from->distanceTo($to), 11));
-        $this->assertEquals(494.42414833321, round($to->distanceTo($from), 11));
+        $this->assertNull(Address::create()->distanceTo($from), 'Missing coordinates should yield null');
+        $this->assertEquals(0.0, $from->distanceTo($from));
+        $this->assertEquals(0.0, $to->distanceTo($to));
+        $this->assertEqualsWithDelta(494.42414833321, $from->distanceTo($to), 0.00001);
+        $this->assertEqualsWithDelta(494.42414833321, $to->distanceTo($from), 0.00001);
     }
 
-    public function testAddressGeocodingLogsQuietlyOnFailure()
+    public function testAddProviderIsUsed(): void
+    {
+        AddressGeocoding::add_provider($this->stubProvider(1.23, 4.56));
+
+        $address = Address::create(['Country' => 'NZ', 'Address' => 'Somewhere']);
+        $address->geocodeAddress();
+
+        $this->assertEqualsWithDelta(1.23, (float) $address->Latitude, 0.00001);
+        $this->assertEqualsWithDelta(4.56, (float) $address->Longitude, 0.00001);
+    }
+
+    public function testAddressGeocodingLogsQuietlyOnFailure(): void
     {
         $originalLogger = Injector::inst()->get(LoggerInterface::class);
         $logger = $this->createMock(LoggerInterface::class);
@@ -46,14 +64,13 @@ class GeocodingTest extends SapphireTest
             ->method('notice')
             ->with(
                 'Address geocoding failed',
-                $this->callback(function ($context) {
-                    return isset($context['exception']) && $context['exception'] instanceof Error;
-                })
+                $this->callback(fn ($context) => isset($context['exception'])
+                    && $context['exception'] instanceof \Throwable)
             );
         Injector::inst()->registerService($logger, LoggerInterface::class);
 
         try {
-            $this->setGeocoderInstance($this->createThrowingGeocoder());
+            AddressGeocoding::set_geocoder($this->throwingGeocoder());
             $address = $this->objFromFixture(Address::class, "address1");
             $address->Latitude = null;
             $address->Longitude = null;
@@ -63,48 +80,49 @@ class GeocodingTest extends SapphireTest
         }
     }
 
-    public function testIpGeocodingLogsQuietlyOnFailure()
+    /**
+     * A provider that returns fixed coordinates for any query, to prove add_provider() is honoured.
+     */
+    private function stubProvider(float $lat, float $lng): Provider
     {
-        $originalLogger = Injector::inst()->get(LoggerInterface::class);
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->once())
-            ->method('notice')
-            ->with(
-                'IP geocoding failed',
-                $this->callback(function ($context) {
-                    return isset($context['exception']) && $context['exception'] instanceof Error;
-                })
-            );
-        Injector::inst()->registerService($logger, LoggerInterface::class);
-
-        try {
-            $this->setGeocoderInstance($this->createThrowingGeocoder());
-            $extension = new class extends GeocodedUserInfo {
-                public function lookupAddressFromIP($ip)
-                {
-                    return $this->addressFromIP($ip);
-                }
-            };
-            $this->assertSame([], $extension->lookupAddressFromIP('8.8.8.8'));
-        } finally {
-            Injector::inst()->registerService($originalLogger, LoggerInterface::class);
-        }
-    }
-
-    private function createThrowingGeocoder()
-    {
-        return new class {
-            public function geocode($query)
+        return new class ($lat, $lng) implements Provider {
+            public function __construct(private float $lat, private float $lng)
             {
-                throw new Error('Geocoding service unavailable');
+            }
+
+            public function geocodeQuery(GeocodeQuery $query): Collection
+            {
+                return new AddressCollection([
+                    GeoAddress::createFromArray([
+                        'providedBy' => 'stub',
+                        'latitude' => $this->lat,
+                        'longitude' => $this->lng,
+                    ]),
+                ]);
+            }
+
+            public function reverseQuery(ReverseQuery $query): Collection
+            {
+                return new AddressCollection([]);
+            }
+
+            public function getName(): string
+            {
+                return 'stub';
             }
         };
     }
 
-    private function setGeocoderInstance($geocoder): void
+    /**
+     * A geocoder whose lookups always throw, to exercise the quiet-failure logging path.
+     */
+    private function throwingGeocoder(): Geocoder
     {
-        $instanceProperty = new \ReflectionProperty(AddressGeocoding::class, 'inst');
-        $instanceProperty->setAccessible(true);
-        $instanceProperty->setValue(null, $geocoder);
+        return new class extends ProviderAggregator {
+            public function geocodeQuery(GeocodeQuery $query): Collection
+            {
+                throw new \RuntimeException('Geocoding service unavailable');
+            }
+        };
     }
 }
